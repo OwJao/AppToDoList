@@ -44,7 +44,31 @@ public class Tarefa {
         this.completa = completa;
         this.dataAgora = dataAgora;
     }
+    
+     public Long obterId() {
+        return id;
+    }
 
+    public void definirId(Long id) {
+        this.id = id;
+    }
+
+    public String obterTitulo() {
+        return titulo;
+    }
+
+    public void definirTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String obterDescricao() {
+        return descricao;
+    }
+
+    public void definirDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+    
     @Override
     public String toString() {
         return "Tarefa {" +
