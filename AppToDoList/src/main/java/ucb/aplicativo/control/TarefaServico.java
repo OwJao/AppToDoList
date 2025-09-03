@@ -27,4 +27,23 @@ public class TarefaServico {
         return Collections.unmodifiableList(tarefas);
     }
     
+    public boolean atualizar(Long id, String novoTitulo, String novaDescricao, boolean completa) {
+        for (Tarefa t : tarefas) {
+            if (t.obterId().equals(id)) {
+                t.definirTitulo(novoTitulo);
+                t.definirDescricao(novaDescricao);
+                t.definirCompleta(completa);
+                return true;
+            }
+        }
+        return false;
+    
+   }
+   public boolean remover(Long id) {
+        return tarefas.removeIf(t -> t.obterId().equals(id));
+    }
 }
+
+
+    
+
