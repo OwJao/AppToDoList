@@ -69,6 +69,14 @@ public class Tarefa {
         this.descricao = descricao;
     }
     
+    public boolean obterCompleta(){
+        return completa;
+    }
+
+    public void definirCompleta(boolean completa) {
+        this.completa = completa;  
+    }
+    
     @Override
     public String toString() {
         return "Tarefa {" +
@@ -79,5 +87,7 @@ public class Tarefa {
                 ", dataCriacao=" + dataAgora +
                 '}';
     }
+
+   
 }
 
