@@ -45,28 +45,43 @@ public class Tarefa {
         this.dataAgora = dataAgora;
     }
     
-     public Long obterId() {
+     public Long getId() {
         return id;
     }
 
-    public void definirId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String obterTitulo() {
+    public String getTitulo() {
         return titulo;
     }
 
-    public void definirTitulo(String titulo) {
+    public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
 
-    public String obterDescricao() {
+    public String getDescricao() {
         return descricao;
     }
 
-    public void definirDescricao(String descricao) {
+    public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+    
+    public LocalDateTime getDataAgora(){
+        return dataAgora;
+    }
+    public void setDataAgora(LocalDateTime dataAgora) {
+        this.dataAgora = dataAgora;
+    }
+    
+    public boolean isCompleta(){
+        return completa;
+    }
+    
+    public void setCompleta(Boolean completa){
+        this.completa = completa;
     }
     
     @Override
