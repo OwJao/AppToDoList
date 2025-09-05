@@ -24,7 +24,7 @@ public class AppToDoList {
 
         System.out.println("\n?------ TO DO LIST----- \n");
 
-        while (opcao != 6) {
+        while (opcao != 7) {
 
             System.out.println("\nEscolha uma opção:");
             System.out.println("1 - Cadastrar nova tarefa");
@@ -32,7 +32,8 @@ public class AppToDoList {
             System.out.println("3 - Editar tarefa");
             System.out.println("4 - Excluir tarefa");
             System.out.println("5 - Marcar tarefa como concluída");
-            System.out.println("6 - Sair");
+            System.out.println("6 - Visualizar tarefas concluídas");
+             System.out.println("7 - Sair");
             System.out.print("Opção: ");
             opcao = sc.nextInt();
             sc.nextLine(); // limpa buffer
@@ -46,19 +47,33 @@ public class AppToDoList {
                     System.out.print("Digite a Descrição:  ");
                     String descricao = sc.nextLine();
                     
-                    Tarefa tarefa = new Tarefa(titulo, descricao);
-                    TarefaServico.adicionarTarefa(tarefa);
+                    Tarefa tarefa = tarefaservico.criar(titulo, descricao);
                     
-                    System.out.println("Nova Tarefa Adiconada Com Sucesso!!");
+                    
+                    System.out.println("Nova Tarefa Adiconada Com Sucesso!!" + tarefa.obterId());
                     break;
                     
                 case 2 :
-                    TarefaServico.listarTarefa();
+                   
+                    List<Tarefa> TarefaServico = tarefaservico.listar();
+                    
+                    if (tarefaservico.isEmpty()){
+                        System.out.println("Nenhama tarefa cadastrada.");
+                    } else {
+                        System.out.println("-----Lista de Tarefas-----");
+                        for (Tarefa t : TarefaServico){
+                            System.out.println("ID: " + t.obterId());
+                            System.out.println("Titulo: " + t.getTitulo());
+                            System.out.println("Descrição:  " + t.getDescricao());
+                            System.out.println("Data de Criação: " + t.getdataAgoraFormatadapt());
+                            System.out.println("----------------------------" );
+                        }
+                    }
                     break;
                     
                 case 3 :
                     System.out.print("Digite o ID da Tarefa para edita-la:  ");
-                    int editarId = sc.nextInt();
+                    long editarId = sc.nextLong();
                     sc.nextLine();
                     
                     System.out.print("Digite o novo Título: ");
@@ -67,9 +82,9 @@ public class AppToDoList {
                      System.out.print("Digite a nova Descrição: ");
                     String novaDescricao = sc.nextLine();
                     
-                    boolean editar = TarefaServico.editarTarefa(editarId, novoTitulo, novaDescricao);
+                    boolean editou = tarefaservico.atualizar(editarId, novoTitulo, novaDescricao, false);
                     
-                    if(editar){
+                    if(editou){
                         System.out.println("Tarefa editada! ");
                     } else {
                         System.out.println("A tarefa com esse ID não foi encontrada. ");
@@ -78,12 +93,12 @@ public class AppToDoList {
                   
                 case 4: 
                     System.out.println("Digite o ID da tarefa para remove-la:  ");
-                    int removeId = sc.nextInt();
+                    long removeId = sc.nextLong();
                     sc.nextLine();
                     
-                    boolean remover = TarefaServico.removerTarefa(removeId);
+                    boolean removido = tarefaservico.remover(removeId);
                     
-                    if(remove){
+                    if(removido){
                         System.out.println("Tarefa Removida! ");
                     } else {
                         System.out.println("A tarefa com esse ID não foi encontrada. ");
@@ -92,25 +107,29 @@ public class AppToDoList {
                     
                 case 5:
                     System.out.println("Digite o ID da tarefa pa conclui-la: ");
-                    int complatar = sc.nextInt();
+                    long complatarId = sc.nextLong();
                     sc.nextLine();
                     
-                    boolean completar = TarefaServico.completarTarefa(completar);
+                    boolean completou = tarefaservico.atualizar(completarId);
                     
-                    if(completar){
-                        System.out.println("Tarefa Removida! ");
+                    if(completou){
+                        System.out.println("Tarefa Concluida! ");
                     } else {
                         System.out.println("A tarefa com esse ID não foi encontrada. ");
                     }
                     break;
                      
                 case 6 :
+                    
+                    break;
+                    
+                case 7 :
                     System.out.println("Encerrando...");
                     sc.close(); 
                
-                    break;
+                    break
                     
-                default:  System.out.println("Opção inválida. Escolha de 1 a 6.");
+                default:  System.out.println("Opção inválida. Escolha de 1 a 7.");
             }
         }  // Fim do Menu While 
     }
