@@ -15,12 +15,16 @@ import ucb.aplicativo.model.Tarefa; /*Importando dados passados pela Tarefa*/
  */
 public class TarefaServico {
     private final List<Tarefa> tarefas = new ArrayList<>();
-    private int idAutomatico = 1; /*Quero que comece a contar pelo 1*/
+    private Long idAutomatico = 1L; /*Quero que comece a contar pelo 1*/
     
     public Tarefa criar(String titulo, String descricao) {
         Tarefa tarefa = new Tarefa(idAutomatico++, titulo, descricao);
         tarefas.add(tarefa);
         return tarefa;
+    }
+    
+    public Tarefa criar(String titulo) {
+        return criar(titulo, "Sem descrição");
     }
     
     public List<Tarefa> listar() {
@@ -29,10 +33,10 @@ public class TarefaServico {
     
     public boolean atualizar(Long id, String novoTitulo, String novaDescricao, boolean completa) {
         for (Tarefa t : tarefas) {
-            if (t.obterId().equals(id)) {
-                t.definirTitulo(novoTitulo);
-                t.definirDescricao(novaDescricao);
-                t.definirCompleta(completa);
+            if (t.getId().equals(id)) {
+                t.setTitulo(novoTitulo);
+                t.setDescricao(novaDescricao);
+                t.setCompleta(completa);
                 return true;
             }
         }
@@ -40,7 +44,17 @@ public class TarefaServico {
     
    }
    public boolean remover(Long id) {
-        return tarefas.removeIf(t -> t.obterId().equals(id));
+        return tarefas.removeIf(t -> t.getId().equals(id));
+    }
+   
+   public boolean completarTarefa(Long id) {
+        for (Tarefa t : tarefas) {
+            if (t.getId().equals(id)) {
+                t.setCompleta(true); // apenas altero o status para 'true'
+                return true;
+            }
+        }
+        return false; // retorna false se não encontrar a tarefa informada
     }
 }
 

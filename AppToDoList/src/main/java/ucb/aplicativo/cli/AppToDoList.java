@@ -8,6 +8,7 @@ package ucb.aplicativo.cli;
  *
  * @author JOAO
  */
+import java.util.List;
 import java.util.Scanner;
 import ucb.aplicativo.control.TarefaServico;
 import ucb.aplicativo.model.Tarefa;
@@ -28,9 +29,9 @@ public class AppToDoList {
 
             System.out.println("\nEscolha uma opção:");
             System.out.println("1 - Cadastrar nova tarefa");
-            System.out.println("2 - Visualizar tarefas");
-            System.out.println("3 - Editar tarefa");
-            System.out.println("4 - Excluir tarefa");
+            System.out.println("2 - Listar tarefas");
+            System.out.println("3 - Atualizar tarefa");
+            System.out.println("4 - Remover tarefa");
             System.out.println("5 - Marcar tarefa como concluída");
             System.out.println("6 - Sair");
             System.out.print("Opção: ");
@@ -39,78 +40,92 @@ public class AppToDoList {
 
             
            switch (opcao) {
-                case 1 : 
-                    System.out.print("Digite o Título:  ");
+                case 1 -> {
+                    System.out.print("Digite o Título da tarefa (obrigatório): ");
                     String titulo = sc.nextLine();
-                    
-                    System.out.print("Digite a Descrição:  ");
+
+                    System.out.print("Digite a Descrição (opcional, pressione Enter para pular): ");
                     String descricao = sc.nextLine();
+
+                    if (titulo.isBlank()) {
+                        System.out.println("Erro: O título é obrigatório.");
+                    } else if (descricao.isBlank()) {
+                        tarefaservico.criar(titulo);
+                        System.out.println("\nTarefa adicionada com sucesso!");
+                    } else {
+                        tarefaservico.criar(titulo, descricao);
+                        System.out.println("\nTarefa adicionada com sucesso!");
+                    }
+                }
                     
-                    Tarefa tarefa = new Tarefa(titulo, descricao);
-                    TarefaServico.adicionarTarefa(tarefa);
+                case 2 -> {
+                    List<Tarefa> tarefas = tarefaservico.listar();
+                    if (tarefas.isEmpty()) {
+                        System.out.println("Nenhuma tarefa cadastrada.");
+                    } else {
+                        System.out.println("\n--- Lista de Tarefas ---");
+                        for (Tarefa t : tarefas) {
+                            System.out.println(t);
+                        }
+                        System.out.println("----------------------");
+                    }
+                }
                     
-                    System.out.println("Nova Tarefa Adiconada Com Sucesso!!");
-                    break;
-                    
-                case 2 :
-                    TarefaServico.listarTarefa();
-                    break;
-                    
-                case 3 :
+                case 3 -> {
                     System.out.print("Digite o ID da Tarefa para edita-la:  ");
-                    int editarId = sc.nextInt();
+                    Long editarId = sc.nextLong();
                     sc.nextLine();
                     
                     System.out.print("Digite o novo Título: ");
                     String novoTitulo = sc.nextLine();
                     
-                     System.out.print("Digite a nova Descrição: ");
+                    System.out.print("Digite a nova Descrição: ");
                     String novaDescricao = sc.nextLine();
                     
-                    boolean editar = TarefaServico.editarTarefa(editarId, novoTitulo, novaDescricao);
+                    boolean editar = tarefaservico.atualizar(editarId, novoTitulo, novaDescricao, false);
                     
                     if(editar){
                         System.out.println("Tarefa editada! ");
                     } else {
                         System.out.println("A tarefa com esse ID não foi encontrada. ");
                     }
-                    break;
+                }
                   
-                case 4: 
+                case 4 -> { 
                     System.out.println("Digite o ID da tarefa para remove-la:  ");
-                    int removeId = sc.nextInt();
+                    Long removeId = sc.nextLong();
                     sc.nextLine();
                     
-                    boolean remover = TarefaServico.removerTarefa(removeId);
+                    boolean remover = tarefaservico.remover(removeId);
                     
-                    if(remove){
+                    if(remover){
                         System.out.println("Tarefa Removida! ");
                     } else {
                         System.out.println("A tarefa com esse ID não foi encontrada. ");
                     }
-                    break;
+                }
                     
-                case 5:
-                    System.out.println("Digite o ID da tarefa pa conclui-la: ");
-                    int complatar = sc.nextInt();
+                case 5 -> {
+                    System.out.println("Digite o ID da tarefa para concluí-la: ");
+                    Long completarId = sc.nextLong();
                     sc.nextLine();
                     
-                    boolean completar = TarefaServico.completarTarefa(completar);
+                    boolean completar = tarefaservico.completarTarefa(completarId);
                     
                     if(completar){
-                        System.out.println("Tarefa Removida! ");
+                        System.out.println("Tarefa Completada! ");
                     } else {
                         System.out.println("A tarefa com esse ID não foi encontrada. ");
                     }
-                    break;
+                }
                      
-                case 6 :
+                case 6 -> {
                     System.out.println("Encerrando...");
-                    sc.close(); 
-               
-                    break;
+                    sc.close();
+                    return;
+                }
                     
-                default:  System.out.println("Opção inválida. Escolha de 1 a 6.");
+                default -> System.out.println("Opção inválida. Escolha de 1 a 6.");
             }
         }  // Fim do Menu While 
     }
