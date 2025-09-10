@@ -80,7 +80,7 @@ public class Tarefa {
         return completa;
     }
     
-    public void setCompleta(Boolean completa){
+    public void setCompleta(boolean completa){
         this.completa = completa;
     }
     
