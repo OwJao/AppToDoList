@@ -8,6 +8,8 @@ package ucb.aplicativo.cli;
  *
  * @author JOAO
  */
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import ucb.aplicativo.control.TarefaServico;
 import ucb.aplicativo.model.Tarefa;
@@ -57,7 +59,7 @@ public class AppToDoList {
                    
                     List<Tarefa> TarefaServico = tarefaservico.listar();
                     
-                    if (tarefaservico.isEmpty()){
+                    if (TarefaServico.isEmpty()){
                         System.out.println("Nenhama tarefa cadastrada.");
                     } else {
                         System.out.println("-----Lista de Tarefas-----");
@@ -120,14 +122,33 @@ public class AppToDoList {
                     break;
                      
                 case 6 :
-                    
+                    List<Tarefa> listaConcluidas = tarefaservico.listar();
+
+                  boolean temConcluida = false;
+
+                  System.out.println("----- Tarefas Concluídas -----");
+                  
+                  for (Tarefa t : listaConcluidas) {
+                   if (t.isConcluida()) { //  verifica se a tarefa está concluída
+                   System.out.println("ID: " + t.obterId());
+                   System.out.println("Título: " + t.getTitulo());
+                   System.out.println("Descrição: " + t.getDescricao());
+                   System.out.println("Data de Criação: " + t.getDataAgoraFormatadapt());
+                   System.out.println("----------------------------");
+            temConcluida = true;
+        }
+    }
+
+    if (!temConcluida) {
+        System.out.println("Nenhuma tarefa concluída encontrada.");
+    }
                     break;
                     
                 case 7 :
                     System.out.println("Encerrando...");
                     sc.close(); 
                
-                    break
+                    break;
                     
                 default:  System.out.println("Opção inválida. Escolha de 1 a 7.");
             }
